@@ -24,6 +24,7 @@
 
 <body>
     <div id="cesiumContainer"></div>
+
     <script>
         var esri = new Cesium.ArcGisMapServerImageryProvider({
             url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
@@ -31,10 +32,12 @@
 
         Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2YTIyZmYwNC1lOWZlLTRmN2ItYTA0YS1jMTAxZWIyOGY3ZWEiLCJpZCI6MTIwNzU1LCJpYXQiOjE2NzMyNjMzMDl9.Jkr5hkEYBr4y5Wr9PrbJ1VQIj1eSiMAesFeT6KUrf28";
         const viewer = new Cesium.Viewer(cesiumContainer, {
-            baseLayerPicker: false,
+            baseLayerPicker: true, //底图组件，选择三维数字地球的地图（imagery and teerrain）
             imageryProvider: esri,
-            animation: false,
+            animation: false, //动画小组件
             timeline: false,
+            fullscreenButton: true,
+            vrButton: true,
             terrainProvider: new Cesium.CesiumTerrainProvider({
                 url: Cesium.IonResource.fromAssetId(1),
                 requestVertexNormals: true,
@@ -49,9 +52,16 @@
             })
         );
 
-        //去掉Cesium的底部水印
+        //去掉Cesium的底部水印 隐藏logo
         viewer._cesiumWidget._creditContainer.style.display = "none";
+
+        //CesiumInspector
+        viewer.extend(Cesium.viewerCesiumInspectorMixin);
+
+        //指定Home按钮指向的区域位置
+        // Cesium.Camera.DEFAULT_VIEW_RECTANGLE = Cesium.Rectangle.fromDegrees(113.008943, 28.06775, 113.008943, 28.06775);
     </script>
+
 </body>
 
 </html>
